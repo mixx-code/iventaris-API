@@ -38,7 +38,8 @@ exports.getAllItemKeluar = (req, res, next) => {
       totalItems = count;
       return ItemKeluar.find()
         .skip((parseInt(currentPage) - 1) * parseInt(perPage))
-        .limit(parseInt(perPage));
+        .limit(parseInt(perPage))
+        .sort({ createdAt: -1 }); // tambahkan metode sort() untuk mengurutkan data berdasarkan createdAt dari terbaru ke terlama
     })
     .then((result) => {
       res.status(200).json({
