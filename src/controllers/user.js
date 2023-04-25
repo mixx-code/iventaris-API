@@ -227,3 +227,45 @@ exports.deleteUser = (req, res, next) => {
     })
     .catch((err) => next(err));
 };
+
+//update
+exports.updateUser = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const err = new Error("Input value tidak sesuai");
+    err.errorStatus = 400;
+    err.data = errors.array();
+    console.log(errors.array()); // tambahkan baris ini
+    return next(err);
+  }
+
+  const nama = req.body.nama;
+  const role = req.body.role;
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const userId = req.params.userId;
+
+  user
+    .findById(userId)
+    .then((result) => {
+      if (!result) {
+        const err = new Error("user tidak ditemukan");
+        err.errorStatus = 404;
+        return next(err);
+      }
+      result.nama = nama;
+      result.role = role;
+      result.email = email;
+      result.password = password;
+
+      return result.save();
+    })
+    .then((result) => {
+      res.status(200).json({
+        message: "Update Success",
+        data: result,
+      });
+    })
+    .catch((err) => next(err));
+};

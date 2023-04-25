@@ -19,6 +19,21 @@ router.post(
   ],
   userController.createUser
 );
+router.put(
+  "/user/:userId",
+  [
+    body("nama").isLength({ min: 3 }).withMessage("input nama tidak sesuai"),
+    body("role").isLength({ min: 4 }).withMessage("input role tidak sesuai"),
+    body("email")
+      .isEmail()
+      .isLength({ min: 5 })
+      .withMessage("input email tidak sesuai"),
+    body("password")
+      .isLength({ min: 8 })
+      .withMessage("input password tidak sesuai"),
+  ],
+  userController.updateUser
+);
 router.post(
   "/login",
   [
