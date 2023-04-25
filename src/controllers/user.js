@@ -46,53 +46,6 @@ exports.createUser = (req, res, next) => {
     });
 };
 
-// exports.userLogin = (req, res, next) => {
-//   const email = req.body.email;
-//   const password = req.body.password;
-
-//   // Cari pengguna dengan email yang diberikan
-//   user
-//     .findOne({ email })
-//     .then((user) => {
-//       if (!user) {
-//         return res.status(400).json({ message: "Email atau password salah" });
-//       }
-
-//       // Bandingkan password yang dimasukkan dengan password yang di-hash di database
-//       user
-//         .comparePassword(password)
-//         .then((isMatch) => {
-//           if (!isMatch) {
-//             return res
-//               .status(400)
-//               .json({ message: "Email atau password salah" });
-//           }
-
-//           // Simpan data user ke session
-//           req.session.user = {
-//             id: user._id,
-//             name: user.name,
-//             email: user.email,
-//           };
-
-//           res.json({
-//             message: "Login berhasil",
-//             user: {
-//               id: req.session.user.id,
-//               name: req.session.user.name,
-//               email: req.session.user.email,
-//             },
-//           });
-//         })
-//         .catch((error) => {
-//           next(error);
-//         });
-//     })
-//     .catch((error) => {
-//       next(error);
-//     });
-// };
-
 exports.userLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -115,22 +68,20 @@ exports.userLogin = (req, res, next) => {
               .json({ message: "Email atau password salah" });
           }
 
-          // Generate token
-          const payload = {
+          // Simpan data user ke session
+          req.session.user = {
             id: user._id,
             name: user.name,
             email: user.email,
           };
-          const options = {
-            expiresIn: "1d",
-          };
-          const secret = "rahasia";
-          const token = jwt.sign(payload, secret, options);
 
-          // Kirim token sebagai respons
           res.json({
-            message: "Login berhasil!!",
-            token: token,
+            message: "Login berhasil",
+            user: {
+              id: req.session.user.id,
+              name: req.session.user.name,
+              email: req.session.user.email,
+            },
           });
         })
         .catch((error) => {
@@ -141,6 +92,55 @@ exports.userLogin = (req, res, next) => {
       next(error);
     });
 };
+
+// exports.userLogin = (req, res, next) => {
+//   const email = req.body.email;
+//   const password = req.body.password;
+
+//   // Cari pengguna dengan email yang diberikan
+//   user
+//     .findOne({ email })
+//     .then((user) => {
+//       if (!user) {
+//         return res.status(400).json({ message: "Email atau password salah" });
+//       }
+
+//       // Bandingkan password yang dimasukkan dengan password yang di-hash di database
+//       user
+//         .comparePassword(password)
+//         .then((isMatch) => {
+//           if (!isMatch) {
+//             return res
+//               .status(400)
+//               .json({ message: "Email atau password salah" });
+//           }
+
+//           // Generate token
+//           const payload = {
+//             id: user._id,
+//             name: user.name,
+//             email: user.email,
+//           };
+//           const options = {
+//             expiresIn: "1d",
+//           };
+//           const secret = "rahasia";
+//           const token = jwt.sign(payload, secret, options);
+
+//           // Kirim token sebagai respons
+//           res.json({
+//             message: "Login berhasil!!",
+//             token: token,
+//           });
+//         })
+//         .catch((error) => {
+//           next(error);
+//         });
+//     })
+//     .catch((error) => {
+//       next(error);
+//     });
+// };
 
 //verifikasi Token
 
