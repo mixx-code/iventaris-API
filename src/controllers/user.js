@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const user = require("../models/user");
-
+const jwt = require("jsonwebtoken");
 exports.createUser = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -11,6 +11,7 @@ exports.createUser = (req, res, next) => {
   }
 
   const nama = req.body.nama;
+  const role = req.body.role;
   const email = req.body.email;
   const password = req.body.password;
 
@@ -25,6 +26,7 @@ exports.createUser = (req, res, next) => {
       // Buat objek user baru
       const newUser = new user({
         nama: nama,
+        role: role,
         email: email,
         password: password,
       });
@@ -43,6 +45,53 @@ exports.createUser = (req, res, next) => {
       next(error);
     });
 };
+
+// exports.userLogin = (req, res, next) => {
+//   const email = req.body.email;
+//   const password = req.body.password;
+
+//   // Cari pengguna dengan email yang diberikan
+//   user
+//     .findOne({ email })
+//     .then((user) => {
+//       if (!user) {
+//         return res.status(400).json({ message: "Email atau password salah" });
+//       }
+
+//       // Bandingkan password yang dimasukkan dengan password yang di-hash di database
+//       user
+//         .comparePassword(password)
+//         .then((isMatch) => {
+//           if (!isMatch) {
+//             return res
+//               .status(400)
+//               .json({ message: "Email atau password salah" });
+//           }
+
+//           // Simpan data user ke session
+//           req.session.user = {
+//             id: user._id,
+//             name: user.name,
+//             email: user.email,
+//           };
+
+//           res.json({
+//             message: "Login berhasil",
+//             user: {
+//               id: req.session.user.id,
+//               name: req.session.user.name,
+//               email: req.session.user.email,
+//             },
+//           });
+//         })
+//         .catch((error) => {
+//           next(error);
+//         });
+//     })
+//     .catch((error) => {
+//       next(error);
+//     });
+// };
 
 exports.userLogin = (req, res, next) => {
   const email = req.body.email;
@@ -66,20 +115,22 @@ exports.userLogin = (req, res, next) => {
               .json({ message: "Email atau password salah" });
           }
 
-          // Simpan data user ke session
-          req.session.user = {
+          // Generate token
+          const payload = {
             id: user._id,
             name: user.name,
             email: user.email,
           };
+          const options = {
+            expiresIn: "1d",
+          };
+          const secret = "rahasia";
+          const token = jwt.sign(payload, secret, options);
 
+          // Kirim token sebagai respons
           res.json({
-            message: "Login berhasil",
-            user: {
-              id: req.session.user.id,
-              name: req.session.user.name,
-              email: req.session.user.email,
-            },
+            message: "Login berhasil!!",
+            token: token,
           });
         })
         .catch((error) => {
@@ -91,6 +142,26 @@ exports.userLogin = (req, res, next) => {
     });
 };
 
+//verifikasi Token
+
+exports.protectedToken = (req, res) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(401).send("Anda tidak memiliki akses");
+  }
+  jwt.verify(token, "rahasia", (err, decoded) => {
+    if (err) {
+      return res.status(401).send("Anda tidak memiliki akses");
+    }
+    res.json({
+      massage: "berhasil token",
+      decode: decoded,
+    });
+    req.user = decoded;
+  });
+};
+
+/////////
 exports.getAllUser = (req, res, next) => {
   const currentPage = req.query.page || 1;
   const perPage = req.query.perPage || 5;

@@ -8,6 +8,7 @@ router.post(
   "/registrasi",
   [
     body("nama").isLength({ min: 3 }).withMessage("input nama tidak sesuai"),
+    body("role").isLength({ min: 4 }).withMessage("input role tidak sesuai"),
     body("email")
       .isEmail()
       .isLength({ min: 5 })
@@ -34,6 +35,7 @@ router.post(
 
 router.get("/users", userController.getAllUser);
 router.get("/user/:userId", userController.getUserById);
+router.get("/protected", userController.protectedToken);
 // //GET: /v1/iventaris/items-masuk
 // router.get("/items-masuk", itemMasukController.getAllItemMasuk);
 

@@ -18,6 +18,10 @@ const user = new Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    required: true,
+  },
 });
 
 user.pre("save", async function (next) {
