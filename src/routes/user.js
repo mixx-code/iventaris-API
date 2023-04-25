@@ -36,6 +36,7 @@ router.post(
 router.get("/users", userController.getAllUser);
 router.get("/user/:userId", userController.getUserById);
 router.get("/protected", userController.protectedToken);
+router.delete("/user/:userId", userController.deleteUser);
 // //GET: /v1/iventaris/items-masuk
 // router.get("/items-masuk", itemMasukController.getAllItemMasuk);
 
@@ -58,6 +59,5 @@ router.get("/protected", userController.protectedToken);
 // );
 
 // //[DELETE]
-// router.delete("/item-masuk/:itemId", itemMasukController.deleteItemMasuk);
 
 // module.exports = router;

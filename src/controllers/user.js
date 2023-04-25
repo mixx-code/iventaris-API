@@ -205,3 +205,25 @@ exports.getUserById = (req, res, next) => {
     })
     .catch((err) => next(err));
 };
+
+exports.deleteUser = (req, res, next) => {
+  const userId = req.params.userId;
+
+  user
+    .findById(userId)
+    .then((result) => {
+      if (!result) {
+        const err = new Error("user tidak ditemukan");
+        err.errorStatus = 404;
+        throw err;
+      }
+      return user.findByIdAndDelete(userId);
+    })
+    .then((result) => {
+      res.status(200).json({
+        message: "Hapus user Berhasil",
+        data: result,
+      });
+    })
+    .catch((err) => next(err));
+};
