@@ -12,10 +12,12 @@ exports.createItemKeluar = (req, res, next) => {
 
   const nama_item_keluar = req.body.nama_item_keluar;
   const jumlah_item_keluar = req.body.jumlah_item_keluar;
+  const id_item = req.body.id_item;
 
   const Upload = new ItemKeluar({
     nama_item_keluar,
     jumlah_item_keluar,
+    id_item,
   });
 
   Upload.save()
