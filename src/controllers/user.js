@@ -4,7 +4,9 @@ const jwt = require("jsonwebtoken");
 exports.createUser = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ message: "Input Value Tidak sesuai!!!" });
+    return res
+      .status(400)
+      .json({ message: "Username atau Password tidak memenuhi syarat!!" });
   }
 
   const nama = req.body.nama;
