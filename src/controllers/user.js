@@ -4,11 +4,10 @@ const jwt = require("jsonwebtoken");
 exports.createUser = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res
-      .status(400)
-      .json({
-        message: "Email salah atau password tidak sesuai : minimal 8 digit",
-      });
+    return res.status(400).json({
+      message:
+        "Email salah atau password tidak sesuai : password minimal 8 digit",
+    });
   }
 
   const nama = req.body.nama;
