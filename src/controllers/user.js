@@ -4,10 +4,7 @@ const jwt = require("jsonwebtoken");
 exports.createUser = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const err = new Error("Input Value Tidak sesuai!!!");
-    err.errorStatus = 400;
-    err.data = errors.array();
-    throw err;
+    return res.status(400).json({ message: "Input Value Tidak sesuai!!!" });
   }
 
   const nama = req.body.nama;
@@ -18,9 +15,9 @@ exports.createUser = (req, res, next) => {
   // Cek apakah email sudah digunakan sebelumnya
   user
     .findOne({ email })
-    .then((user) => {
-      if (!user) {
-        return res.status(400).json({ message: "Email atau password salah" });
+    .then((existingUser) => {
+      if (existingUser) {
+        return res.status(400).json({ message: "Email sudah terdaftar" });
       }
 
       // Buat objek user baru
@@ -41,6 +38,7 @@ exports.createUser = (req, res, next) => {
       });
     })
     .catch((error) => {
+      console.log("error: ", error);
       next(error);
     });
 };
