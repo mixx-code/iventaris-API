@@ -12,6 +12,10 @@ const ItemMasuk = new Schema(
       type: Number,
       require: true,
     },
+    id_item: {
+      type: String,
+      require: true,
+    },
   },
   {
     timestamps: true,

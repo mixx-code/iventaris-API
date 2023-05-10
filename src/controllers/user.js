@@ -41,7 +41,6 @@ exports.createUser = (req, res, next) => {
       });
     })
     .catch((error) => {
-      console.log("error: ", error);
       next(error);
     });
 };

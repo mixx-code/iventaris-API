@@ -35,6 +35,9 @@ router.put(
       .isNumeric()
       .isLength({ min: 1 })
       .withMessage("input total stok tidak sesuai"),
+    body("id_item")
+      .isLength({ min: 1 })
+      .withMessage("input id item tidak sesuai"),
   ],
   itemMasukController.updateItemMasuk
 );

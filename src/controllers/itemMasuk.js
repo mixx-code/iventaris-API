@@ -12,10 +12,12 @@ exports.createItemMasuk = (req, res, next) => {
 
   const nama_item_masuk = req.body.nama_item_masuk;
   const jumlah_item_masuk = req.body.jumlah_item_masuk;
+  const id_item = req.body.id_item;
 
   const Upload = new ItemMasuk({
     nama_item_masuk,
     jumlah_item_masuk,
+    id_item,
   });
 
   Upload.save()
