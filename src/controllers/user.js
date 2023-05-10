@@ -18,9 +18,9 @@ exports.createUser = (req, res, next) => {
   // Cek apakah email sudah digunakan sebelumnya
   user
     .findOne({ email })
-    .then((existingUser) => {
-      if (existingUser) {
-        return res.status(400).json({ message: "Email sudah terdaftar" });
+    .then((user) => {
+      if (!user) {
+        return res.status(400).json({ message: "Email atau password salah" });
       }
 
       // Buat objek user baru
