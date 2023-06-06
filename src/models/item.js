@@ -11,6 +11,10 @@ const ItemPost = new Schema({
     type: Number,
     required: true,
   },
+  id_user: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("ItemPost", ItemPost);

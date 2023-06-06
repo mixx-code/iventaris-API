@@ -14,6 +14,9 @@ router.post(
       .isNumeric()
       .isLength({ min: 1 })
       .withMessage("input total stok tidak sesuai"),
+    body("id_user")
+      .isLength({ min: 1 })
+      .withMessage("input id user tidak sesuai"),
   ],
   itemController.createItem
 );
@@ -35,6 +38,9 @@ router.put(
       .isNumeric()
       .isLength({ min: 1 })
       .withMessage("Input total stok tidak sesuai"),
+    body("id_user")
+      .isLength({ min: 1 })
+      .withMessage("input id user tidak sesuai"),
   ],
   itemController.updateItem
 );

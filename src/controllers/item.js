@@ -12,10 +12,12 @@ exports.createItem = (req, res, next) => {
 
   const nama_item = req.body.nama_item;
   const total_stok = req.body.total_stok;
+  const id_user = req.body.id_user;
 
   const Upload = new ItemPost({
     nama_item,
     total_stok,
+    id_user,
   });
 
   Upload.save()
@@ -81,6 +83,7 @@ exports.updateItem = (req, res, next) => {
 
   const nama_item = req.body.nama_item;
   const total_stok = req.body.total_stok;
+  const id_user = req.body.id_user;
 
   const itemId = req.params.itemId;
 
@@ -93,6 +96,7 @@ exports.updateItem = (req, res, next) => {
       }
       result.nama_item = nama_item;
       result.total_stok = total_stok;
+      result.id_user = id_user;
 
       return result.save();
     })
