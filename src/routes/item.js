@@ -48,4 +48,6 @@ router.put(
 //[DELETE]
 router.delete("/item/:itemId", itemController.deleteItem);
 
+//[SEARCH]
+router.get("/search", itemController.search);
 module.exports = router;

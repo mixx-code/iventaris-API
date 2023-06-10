@@ -130,3 +130,36 @@ exports.deleteItem = (req, res, next) => {
     })
     .catch((err) => next(err));
 };
+
+//[SEARCH]
+exports.search = async (req, res, next) => {
+  const currentPage = req.query.page || 1;
+  const perPage = req.query.perPage || 5;
+  const { query } = req.query;
+
+  try {
+    // Lakukan pencarian dengan menggunakan query yang diberikan
+    const totalCount = await ItemPost.countDocuments({
+      nama_item: { $regex: query, $options: "i" },
+    });
+
+    const results = await ItemPost.find({
+      nama_item: { $regex: query, $options: "i" },
+    })
+      .skip((parseInt(currentPage) - 1) * parseInt(perPage))
+      .limit(parseInt(perPage));
+
+    res.status(200).json({
+      message: "Data Blog Post berhasil Dipanggil",
+      total_data: totalCount,
+      current_page: parseInt(currentPage),
+      per_page: parseInt(perPage),
+      data: results,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Terjadi kesalahan saat melakukan pencarian" });
+  }
+};
